@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Akun{% endblock %}
+{% block heading %}Akun{% endblock %}
+{% block subheading %}Data akun dan sandi Anda{% endblock %}
+{% block content %}
+<section class="grid-2 grid-akun">
+  <div class="panel">
+    <div class="panel-head"><h2><svg class="ikon" aria-hidden="true"><use href="#i-user"/></svg>Data akun</h2></div>
+    <dl class="meta">
+      <dt>Nama</dt><dd>{{ pengguna.nama }}</dd>
+      <dt>Nama pengguna</dt><dd>{{ pengguna.nama_pengguna }}</dd>
+      <dt>Terdaftar</dt><dd>{{ pengguna.dibuat|waktu }}</dd>
+      <dt>Masuk terakhir</dt><dd>{{ pengguna.masuk_terakhir|waktu }}</dd>
+    </dl>
+    <form method="post" action="{{ url_for('auth.keluar') }}" class="form-keluar-blok">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-blok" type="submit"><svg class="ikon" aria-hidden="true"><use href="#i-log-out"/></svg>Keluar</button>
+    </form>
+  </div>
+  <form method="post" class="panel" autocomplete="off">
+    <div class="panel-head"><h2><svg class="ikon" aria-hidden="true"><use href="#i-key-round"/></svg>Ganti sandi</h2></div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+      <label for="sandi_lama">Sandi sekarang</label>
+      <input id="sandi_lama" name="sandi_lama" type="password" required maxlength="128" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label for="sandi_baru">Sandi baru</label>
+      <div class="sandi-wadah">
+        <input id="sandi_baru" name="sandi_baru" type="password" required minlength="8" maxlength="128" autocomplete="new-password">
+        <button class="btn-lihat" type="button" data-lihat="sandi_baru" aria-label="Tampilkan sandi" aria-pressed="false"><svg class="ikon" aria-hidden="true"><use href="#i-eye"/></svg></button>
+      </div>
+      <small>Minimal 8 karakter, berisi huruf dan angka. Perangkat lain yang memakai akun ini akan dikeluarkan.</small>
+    </div>
+    <div class="field">
+      <label for="ulang_sandi">Ulangi sandi baru</label>
+      <input id="ulang_sandi" name="ulang_sandi" type="password" required minlength="8" maxlength="128" autocomplete="new-password">
+    </div>
+    <div class="actions"><button class="btn btn-utama" type="submit">Simpan sandi baru</button></div>
+  </form>
+</section>
+{% endblock %}

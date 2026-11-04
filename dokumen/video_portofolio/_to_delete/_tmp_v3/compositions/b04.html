@@ -1,0 +1,37 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+.tag{position:absolute;left:0;right:0;top:326px;text-align:center}
+.tag span{display:inline-block;background:#177e97;color:#fff;font-size:28px;font-weight:800;letter-spacing:.2em;padding:14px 34px 14px 40px;border-radius:999px}
+.j{position:absolute;left:40px;right:40px;text-align:center;font-size:100px;font-weight:800;line-height:1;letter-spacing:-.01em;white-space:nowrap}
+#k04-j1{top:446px} #k04-j2{top:552px} .teal{color:#1a8aa6}
+.kartu{position:absolute;left:150px;top:760px;width:780px;height:520px;border-radius:40px;background:#fff;
+  border:1px solid rgba(16,35,59,.06);box-shadow:0 30px 70px rgba(16,35,59,.10)}
+.kartu.polos{background:transparent;border:none;box-shadow:none}
+.chip{display:inline-flex;align-items:center;gap:12px;padding:12px 24px;border-radius:999px;background:#f1f6f9;border:2px solid #e2eaf0;font-size:28px;font-weight:700;white-space:nowrap}
+.vd{position:absolute;left:14px;top:14px;width:752px;overflow:hidden;border-radius:28px;background:#000}
+.bawah{position:absolute;left:0;right:0;top:450px;display:flex;justify-content:center;gap:16px}.dot{width:18px;height:18px;border-radius:50%;display:block}</style>
+  <div id="root" data-composition-id="b04" data-width="1080" data-height="1920">
+    <div class="tag" id="k04-tag"><span>DETECTION</span></div>
+    <div class="j" id="k04-j1">SEES PEOPLE</div>
+    <div class="j teal" id="k04-j2">AND BIKES</div>
+    <div class="kartu" id="k04">
+      <div class="vd" style="height:423px"><video id="k04-v" class="clip" data-start="0" data-duration="3.921" data-media-start="0.5" muted playsinline src="assets/video/curi.mp4" style="position:absolute;left:0;top:0;width:752px;height:423px;object-fit:cover"></video></div>
+      <div class="bawah"><span class="chip" id="k04-c0"><i class="dot" style="background:#2fbf71"></i>People</span>
+        <span class="chip" id="k04-c1"><i class="dot" style="background:#2ea8e8"></i>Motorbikes</span></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#k04-tag", {opacity:0, scale:.8}, {opacity:1, scale:1, duration:.35, ease:"back.out(2)"}, .05);
+    tl.fromTo("#k04-j1", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .12);
+    tl.fromTo("#k04-j2", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .22);
+    tl.fromTo("#k04", {opacity:0, y:50, scale:.96}, {opacity:1, y:0, scale:1, duration:.55, ease:"power3.out"}, .3);
+    tl.fromTo("#k04 .bawah .chip", {opacity:0, y:20}, {opacity:1, y:0, duration:.4, ease:"back.out(2)", stagger:.3}, 1.48);
+    tl.to("#k04-tag, #k04-j1, #k04-j2", {opacity:0, filter:"blur(10px)", duration:.3, ease:"power2.in"}, 3.581);
+    tl.to("#k04", {opacity:0, scale:.97, duration:.3, ease:"power2.in"}, 3.581);
+    window.__timelines["b04"] = tl;
+  </script>
+</template>

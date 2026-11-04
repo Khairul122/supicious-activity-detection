@@ -1,0 +1,22 @@
+{
+  "A": {
+    "layak": true,
+    "syarat": {
+      "recall orang tertutup naik": true,
+      "mAP50 orang validasi turun maks 0,02": true,
+      "mAP50 motor validasi turun maks 0,02": true
+    },
+    "naik_recall_oklusi": 0.20629999999999998,
+    "beda_map50_orang": 0.05820000000000003,
+    "beda_map50_motor": 0.06809999999999994
+  },
+  "B": {
+    "layak": true,
+    "syarat": {
+      "recall orang tertutup naik": true,
+      "mAP50 orang validasi turun maks 0,02": true
+    },
+    "naik_recall_oklusi": 0.5175000000000001,
+    "beda_map50_orang": 0.6204000000000001
+  }
+}

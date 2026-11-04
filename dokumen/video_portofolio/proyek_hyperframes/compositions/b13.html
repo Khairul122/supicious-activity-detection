@@ -1,0 +1,25 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+#k13-logo{position:absolute;left:430px;top:470px;width:220px}
+#k13-teks{position:absolute;left:110px;right:110px;top:800px;text-align:center;font-size:72px;font-weight:800;line-height:1.15}
+#k13-teks .tl{color:#1a8aa6}
+#k13-bm{position:absolute;left:490px;top:1070px}
+#k13-gh{position:absolute;left:0;right:0;top:1230px;text-align:center;font-size:34px;font-weight:700;color:#5b6f86}</style>
+  <div id="root" data-composition-id="b13" data-width="1080" data-height="1920">
+    <img id="k13-logo" src="assets/img/logo.png" alt="">
+    <div id="k13-teks"><span>N</span><span>e</span><span>e</span><span>d</span><span class="sp"> </span><span>a</span><span class="sp"> </span><span class="tl">s</span><span class="tl">y</span><span class="tl">s</span><span class="tl">t</span><span class="tl">e</span><span class="tl">m</span><span class="sp"> </span><span>l</span><span>i</span><span>k</span><span>e</span><span class="sp"> </span><span>t</span><span>h</span><span>i</span><span>s</span><span>?</span><span class="sp"> </span><span>L</span><span>e</span><span>t</span><span>'</span><span>s</span><span class="sp"> </span><span class="tl">t</span><span class="tl">a</span><span class="tl">l</span><span class="tl">k</span><span class="tl">.</span></div>
+    <div id="k13-bm"><svg class="ik" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#1a8aa6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+    <div id="k13-gh">github.com/Khairul122</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#k13-logo", {opacity:0, scale:.6}, {opacity:1, scale:1, duration:.55, ease:"back.out(1.8)"}, .1);
+    tl.fromTo("#k13-teks span", {opacity:0}, {opacity:1, duration:.01, stagger:0.0389}, 0.4);
+    tl.fromTo("#k13-bm", {opacity:0, scale:.4}, {opacity:1, scale:1, duration:.4, ease:"back.out(2.5)"}, 1.90);
+    tl.fromTo("#k13-gh", {opacity:0}, {opacity:1, duration:.5}, 2.20);
+    window.__timelines["b13"] = tl;
+  </script>
+</template>

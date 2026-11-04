@@ -1,0 +1,26 @@
+{% extends "_halaman_tamu.html" %}
+{% block title %}Masuk{% endblock %}
+{% block form %}
+<form method="post" action="{{ url_for('auth.masuk') }}" class="kartu-form" autocomplete="on">
+  <h2>Masuk</h2>
+  <p class="muted">Masuk dengan akun petugas untuk membuka pemantauan.</p>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="lanjut" value="{{ lanjut }}">
+  <div class="jebakan" aria-hidden="true"><label for="situs_web">Situs web</label><input id="situs_web" name="situs_web" tabindex="-1" autocomplete="off"></div>
+  <div class="field">
+    <label for="nama_pengguna">Nama pengguna</label>
+    <input id="nama_pengguna" name="nama_pengguna" value="{{ nama_pengguna }}" required maxlength="40"
+           autocomplete="username" autocapitalize="none" spellcheck="false" {{ '' if nama_pengguna else 'autofocus' }}>
+  </div>
+  <div class="field">
+    <label for="sandi">Sandi</label>
+    <div class="sandi-wadah">
+      <input id="sandi" name="sandi" type="password" required maxlength="128" autocomplete="current-password" {{ 'autofocus' if nama_pengguna }}>
+      <button class="btn-lihat" type="button" data-lihat="sandi" aria-label="Tampilkan sandi" aria-pressed="false"><svg class="ikon" aria-hidden="true"><use href="#i-eye"/></svg></button>
+    </div>
+  </div>
+  <label class="cek"><input type="checkbox" name="tetap_masuk" value="1"> Tetap masuk di perangkat ini</label>
+  <button class="btn btn-utama btn-penuh" type="submit"><svg class="ikon" aria-hidden="true"><use href="#i-log-in"/></svg>Masuk</button>
+  <p class="petunjuk">Lupa sandi? Minta admin mengatur ulang lewat terminal: <code>python web/run.py --atur-ulang-sandi NAMA</code></p>
+</form>
+{% endblock %}

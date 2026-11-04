@@ -1,0 +1,5 @@
+ultralytics==8.4.194
+lap==0.5.13
+flask==3.1.3
+pymysql==1.1.2
+waitress==3.0.2

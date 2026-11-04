@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Riwayat{% endblock %}
+{% block heading %}Riwayat peringatan{% endblock %}
+{% block subheading %}Tinjau setiap peringatan, lalu tandai benar atau alarm palsu{% endblock %}
+{% block actions %}
+<a class="btn" href="{{ url_for('riwayat.ekspor', tanggal=data.tanggal or None, sesi=data.sesi_id or None) }}">
+  <svg class="ikon" aria-hidden="true"><use href="#i-download"/></svg>Unduh CSV</a>
+{% endblock %}
+{% block content %}
+{% macro tautan(penilaian=data.penilaian, halaman=None) -%}
+{{ url_for('riwayat.index', tanggal=data.tanggal or None, sesi=data.sesi_id or None, penilaian=penilaian or None, halaman=halaman) }}
+{%- endmacro %}
+<section class="panel saring">
+  <nav class="tab-nilai" aria-label="Saring menurut penilaian">
+    {% for kunci, label in (('', 'Semua'), ('belum', 'Belum dinilai'), ('benar', 'Benar'), ('alarm_palsu', 'Alarm palsu')) %}
+    <a href="{{ tautan(kunci) }}" class="{{ 'aktif' if data.penilaian == kunci }}" {{ 'aria-current=page' if data.penilaian == kunci }}>{{ label }}</a>
+    {% endfor %}
+  </nav>
+  <form method="get" class="filters">
+    <input type="hidden" name="penilaian" value="{{ data.penilaian }}">
+    <div class="field">
+      <label for="tanggal">Tanggal</label>
+      <input type="date" id="tanggal" name="tanggal" value="{{ data.tanggal }}">
+    </div>
+    <div class="field">
+      <label for="sesi">Sesi</label>
+      <select id="sesi" name="sesi">
+        <option value="">Semua sesi</option>
+        {% for s in data.daftar_sesi %}
+        <option value="{{ s.id }}" {{ 'selected' if s.id == data.sesi_id }}>Sesi {{ s.id }}, {{ s.sumber }}, {{ (s.mulai|waktu)[:10] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="actions">
+      <button class="btn btn-utama" type="submit">Tampilkan</button>
+      {% if data.tanggal or data.sesi_id or data.penilaian %}<a class="btn btn-teks" href="{{ url_for('riwayat.index') }}">Hapus saringan</a>{% endif %}
+    </div>
+  </form>
+</section>
+
+<div class="hasil-head">
+  <h2>{{ data.total }} peringatan</h2>
+  {% if data.jumlah_halaman > 1 %}<span class="muted">Halaman {{ data.halaman }} dari {{ data.jumlah_halaman }}</span>{% endif %}
+</div>
+
+{% if data.baris %}
+<ul class="riwayat-grid">
+  {% for p in data.baris %}
+  <li class="riwayat-kartu" data-id="{{ p.id }}" data-penilaian="{{ p.penilaian or '' }}">
+    <button class="foto thumb-btn" type="button" data-full="{{ url_for('riwayat.snapshot', name=p.snapshot) }}"
+            data-caption="{{ p.waktu|waktu }}, ID {{ p.id_orang }}. {{ p.alasan|alasan }}" aria-label="Perbesar snapshot peringatan {{ p.id }}">
+      <img src="{{ url_for('riwayat.snapshot', name=p.snapshot) }}" alt="Snapshot peringatan ID {{ p.id_orang }}" loading="lazy">
+      {% if p.kategori %}<span class="tag tag-k-{{ p.kategori }}">{{ p.kategori|kategori }}</span>{% endif %}
+    </button>
+    <div class="riwayat-isi">
+      <div class="riwayat-atas">
+        <strong>{{ p.waktu|waktu }}</strong>
+        <span class="muted">ID {{ p.id_orang }}</span>
+      </div>
+      <p class="riwayat-alasan">{{ p.alasan|alasan }}</p>
+      <p class="riwayat-sumber muted">Sesi {{ p.sesi_id }}, {{ p.sumber }}, detik {{ '%.1f'|format(p.detik) }}</p>
+      <form method="post" action="{{ url_for('riwayat.nilai', peringatan_id=p.id) }}" class="nilai-aksi nilai-form">
+        <input type="hidden" name="kembali" value="{{ request.full_path }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-kecil btn-benar" name="penilaian" value="{{ '' if p.penilaian == 'benar' else 'benar' }}"
+                data-nilai="benar" aria-pressed="{{ 'true' if p.penilaian == 'benar' else 'false' }}">Benar</button>
+        <button class="btn btn-kecil btn-palsu" name="penilaian" value="{{ '' if p.penilaian == 'alarm_palsu' else 'alarm_palsu' }}"
+                data-nilai="alarm_palsu" aria-pressed="{{ 'true' if p.penilaian == 'alarm_palsu' else 'false' }}">Alarm palsu</button>
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% if data.jumlah_halaman > 1 %}
+<nav class="pager" aria-label="Halaman">
+  {% if data.halaman > 1 %}<a class="btn" href="{{ tautan(halaman=data.halaman - 1) }}">Sebelumnya</a>{% endif %}
+  {% if data.halaman < data.jumlah_halaman %}<a class="btn" href="{{ tautan(halaman=data.halaman + 1) }}">Berikutnya</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<div class="panel kosong-besar">
+  <svg class="ikon ikon-besar" aria-hidden="true"><use href="#i-{{ 'check' if data.penilaian == 'belum' else 'history' }}"/></svg>
+  {% if data.penilaian == 'belum' and not data.tanggal and not data.sesi_id %}
+  <strong>Semua peringatan sudah dinilai</strong>
+  <span>Tidak ada yang perlu ditinjau saat ini.</span>
+  {% elif data.tanggal or data.sesi_id or data.penilaian %}
+  <strong>Tidak ada peringatan untuk saringan ini</strong>
+  <span>Ganti tanggal atau sesi, atau hapus saringan.</span>
+  <a class="btn" href="{{ url_for('riwayat.index') }}">Hapus saringan</a>
+  {% else %}
+  <strong>Belum ada peringatan</strong>
+  <span>Peringatan muncul di sini setelah kamera memantau.</span>
+  <a class="btn btn-utama" href="{{ url_for('kamera.index') }}">Buka Kamera</a>
+  {% endif %}
+</div>
+{% endif %}
+
+<dialog id="preview" class="preview">
+  <form method="dialog"><button class="btn btn-kecil" aria-label="Tutup"><svg class="ikon" aria-hidden="true"><use href="#i-x"/></svg>Tutup</button></form>
+  <img id="preview-img" alt="Snapshot peringatan ukuran penuh">
+  <p id="preview-caption" class="muted"></p>
+</dialog>
+{% endblock %}
+{% block scripts %}
+<script nonce="{{ csp_nonce() }}">
+  document.querySelectorAll(".thumb-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.getElementById("preview-img").src = btn.dataset.full;
+      document.getElementById("preview-caption").textContent = btn.dataset.caption;
+      document.getElementById("preview").showModal();
+    });
+  });
+  // penilaian tanpa memuat ulang halaman; formulir biasa tetap berjalan bila skrip gagal
+  document.querySelectorAll(".nilai-form").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      var tombol = e.submitter;
+      if (!tombol || !window.nilaiPeringatan) return;
+      e.preventDefault();
+      var kartu = form.closest(".riwayat-kartu");
+      var baru = kartu.dataset.penilaian === tombol.dataset.nilai ? "" : tombol.dataset.nilai;
+      window.nilaiPeringatan(kartu.dataset.id, baru).then(function () {
+        kartu.dataset.penilaian = baru;
+        form.querySelectorAll("button").forEach(function (b) {
+          var aktif = b.dataset.nilai === baru;
+          b.setAttribute("aria-pressed", String(aktif));
+          b.value = aktif ? "" : b.dataset.nilai;
+        });
+        window.dialog({ jenis: "sukses", judul: baru ? (baru === "benar" ? "Ditandai benar" : "Ditandai alarm palsu") : "Penilaian dibatalkan",
+                        pesan: "Peringatan " + kartu.dataset.id + " tersimpan.", otomatis: 1600 });
+      }).catch(function (err) { window.dialog({ jenis: "galat", judul: "Penilaian gagal", pesan: err.message }); });
+    });
+  });
+</script>
+{% endblock %}

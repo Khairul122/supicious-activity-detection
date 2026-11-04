@@ -1,0 +1,24 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+#lt-dasar{position:absolute;inset:0;background:#f7f9fb}
+.blob{position:absolute;border-radius:50%}
+#lt-a{left:-300px;top:-200px;width:1100px;height:1100px;background:radial-gradient(closest-side,rgba(46,197,232,.24),rgba(46,197,232,0))}
+#lt-b{left:300px;top:1100px;width:1200px;height:1200px;background:radial-gradient(closest-side,rgba(250,186,140,.26),rgba(250,186,140,0))}
+#lt-c{left:500px;top:300px;width:900px;height:900px;background:radial-gradient(closest-side,rgba(120,200,190,.16),rgba(120,200,190,0))}
+#lt-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(16,35,59,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(16,35,59,.05) 2px,transparent 2px);background-size:60px 60px}</style>
+  <div id="root" data-composition-id="latar" data-width="1080" data-height="1920">
+    <div id="lt-dasar"></div>
+    <div id="lt-a" class="blob" data-layout-allow-overflow></div><div id="lt-b" class="blob" data-layout-allow-overflow></div><div id="lt-c" class="blob" data-layout-allow-overflow></div>
+    <div id="lt-grid"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#lt-a", {x:0, y:0}, {x:160, y:220, duration:48.852, ease:"sine.inOut"}, 0);
+    tl.fromTo("#lt-b", {x:0, y:0}, {x:-220, y:-160, duration:48.852, ease:"sine.inOut"}, 0);
+    tl.fromTo("#lt-c", {x:0, y:0}, {x:-120, y:260, duration:48.852, ease:"sine.inOut"}, 0);
+    window.__timelines["latar"] = tl;
+  </script>
+</template>

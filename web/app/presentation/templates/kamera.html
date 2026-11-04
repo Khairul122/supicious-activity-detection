@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block title %}Kamera{% endblock %}
+{% block heading %}Kamera{% endblock %}
+{% block subheading %}Pantau webcam, kamera CCTV, atau rekaman video secara langsung{% endblock %}
+{% block content %}
+<section class="kamera" id="kamera" data-keadaan="{{ 'memantau' if status.berjalan else 'siap' }}">
+  <div class="kolom-monitor">
+    <div class="monitor">
+      <div class="monitor-bar">
+        <span class="label-siaran" id="label-siaran"><i aria-hidden="true"></i><span id="label-siaran-teks">{{ 'Langsung' if status.berjalan else 'Tidak aktif' }}</span></span>
+        <span class="monitor-sumber" id="cam-sumber">{{ status.sumber or 'Belum ada sumber' }}</span>
+        <span class="monitor-angka" aria-live="polite">
+          <span class="angka" title="Orang terlihat"><svg class="ikon" aria-hidden="true"><use href="#i-users"/></svg><b id="m-orang">0</b><span class="sr-only"> orang</span></span>
+          <span class="angka angka-bahaya" id="m-sus-wadah" title="Orang mencurigakan"><svg class="ikon" aria-hidden="true"><use href="#i-shield-alert"/></svg><b id="m-sus">0</b><span class="sr-only"> mencurigakan</span></span>
+          <span class="angka hidden" id="m-motor-wadah" title="Motor terlihat"><svg class="ikon" aria-hidden="true"><use href="#i-motorbike"/></svg><b id="m-motor">0</b><span class="sr-only"> motor</span></span>
+          <span class="angka angka-redup" id="m-fps">-</span>
+        </span>
+        <button class="btn-ikon" type="button" id="btn-bunyi" aria-pressed="false" title="Bunyi saat ada peringatan baru">
+          <svg class="ikon" aria-hidden="true"><use href="#i-volume-x"/></svg><span class="sr-only">Bunyi peringatan</span>
+        </button>
+      </div>
+      <div class="video-wrap">
+        <img id="video" class="video {{ '' if status.berjalan else 'hidden' }}"
+             data-src="{{ url_for('kamera.stream') }}" {% if status.berjalan %}src="{{ url_for('kamera.stream') }}"{% endif %}
+             alt="Tayangan kamera dengan kotak deteksi">
+        <div id="editor-zona" class="editor hidden">
+          <img id="editor-img" alt="Gambar sumber untuk menggambar zona">
+          <canvas id="editor-canvas" aria-label="Kanvas zona"></canvas>
+        </div>
+        <div id="video-empty" class="video-empty {{ 'hidden' if status.berjalan }}">
+          <span class="spinner hidden" id="spinner" aria-hidden="true"></span>
+          <svg class="ikon ikon-besar" id="empty-ikon" aria-hidden="true"><use href="#i-cctv"/></svg>
+          <strong id="empty-title">Kamera belum menyala</strong>
+          <span id="empty-text">Pilih sumber video dan mode deteksi, lalu tekan Mulai pemantauan.</span>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="dot dot-safe"></i>Aman</span>
+        <span><i class="dot dot-sus"></i>Mencurigakan</span>
+        <span><i class="dot dot-santai"></i>Zona santai</span>
+        <span><i class="dot dot-sensitif"></i>Zona sensitif</span>
+        <span><i class="dot dot-terlarang"></i>Zona terlarang</span>
+        <span><i class="dot dot-motor"></i>Motor terparkir</span>
+      </div>
+    </div>
+
+    <div id="editor-bar" class="panel editor-bar hidden">
+      <div class="panel-head">
+        <h2><svg class="ikon" aria-hidden="true"><use href="#i-map"/></svg>Gambar zona</h2>
+      </div>
+      <p id="editor-info" class="editor-info" role="status">Klik sudut-sudut area pada gambar, minimal 3 titik. Posisi orang dinilai dari titik kakinya.</p>
+      <div class="editor-fields">
+        <div class="field">
+          <label for="zona-nama">Nama zona</label>
+          <input id="zona-nama" maxlength="60" placeholder="Contoh: Depan kasir">
+        </div>
+        <div class="field">
+          <label for="zona-jenis">Jenis zona</label>
+          <select id="zona-jenis">
+            <option value="sensitif">Sensitif: diam 20 detik atau lebih memicu peringatan</option>
+            <option value="terlarang">Terlarang: masuk saja sudah memicu peringatan</option>
+            <option value="santai">Santai: duduk, menunggu, atau tidur tetap aman</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="zona-jam-mulai">Jam aktif</label>
+          <div class="jam-fields">
+            <input type="time" id="zona-jam-mulai" aria-label="Jam mulai aktif">
+            <input type="time" id="zona-jam-selesai" aria-label="Jam selesai aktif">
+          </div>
+          <small>Kosongkan bila selalu aktif. Contoh toko tutup: 22:00 sampai 06:00.</small>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="btn-undo">Hapus titik terakhir</button>
+        <button class="btn btn-utama" type="button" id="btn-simpan-zona"><svg class="ikon" aria-hidden="true"><use href="#i-check"/></svg>Simpan zona</button>
+        <button class="btn btn-teks" type="button" id="btn-tutup-editor">Selesai menggambar</button>
+      </div>
+    </div>
+
+    <section class="panel umpan" aria-labelledby="judul-umpan">
+      <div class="panel-head">
+        <h2 id="judul-umpan"><svg class="ikon" aria-hidden="true"><use href="#i-bell"/></svg><span id="judul-umpan-teks">Peringatan sesi ini</span></h2>
+        <a class="tautan" id="umpan-semua" href="{{ url_for('riwayat.index') }}">Buka di Riwayat</a>
+      </div>
+      <ul class="umpan-daftar" id="umpan">
+        <li class="kosong">Belum ada peringatan. Peringatan baru muncul di sini, dan berbunyi bila tombol bunyi di atas video menyala.</li>
+      </ul>
+    </section>
+
+    <section class="panel zona-panel" aria-labelledby="judul-zona">
+      <div class="panel-head">
+        <h2 id="judul-zona"><svg class="ikon" aria-hidden="true"><use href="#i-map"/></svg>Zona pengawasan</h2>
+        <span class="muted kecil-teks" id="zona-sumber"></span>
+      </div>
+      <ul class="list zona-daftar" id="daftar-zona"><li class="kosong">Memuat zona…</li></ul>
+      <button class="btn btn-blok" type="button" id="btn-atur-zona"><svg class="ikon" aria-hidden="true"><use href="#i-plus"/></svg>Gambar zona baru</button>
+      <p class="petunjuk" id="zona-catatan">Tanpa zona, sistem memakai aturan umum: diam 20 detik atau lebih di area sempit, atau mondar-mandir. Zona berlaku per sumber video.</p>
+    </section>
+  </div>
+
+  <div class="kolom-kendali">
+    <form method="post" action="{{ url_for('kamera.mulai') }}" class="panel langkah-panel" id="form-mulai">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <ol class="langkah">
+        <li>
+          <h2><span class="nomor" aria-hidden="true">1</span>Pilih sumber video</h2>
+          <fieldset class="pilihan pilihan-3">
+            <legend class="sr-only">Jenis sumber</legend>
+            <label class="ubin">
+              <input type="radio" name="jenis" value="webcam" {{ 'checked' if jenis not in ('stream', 'berkas') }}>
+              <svg class="ikon" aria-hidden="true"><use href="#i-webcam"/></svg>
+              <strong>Webcam</strong><small>Kamera laptop atau USB</small>
+            </label>
+            <label class="ubin">
+              <input type="radio" name="jenis" value="stream" {{ 'checked' if jenis == 'stream' }}>
+              <svg class="ikon" aria-hidden="true"><use href="#i-cctv"/></svg>
+              <strong>CCTV</strong><small>Kamera IP lewat jaringan</small>
+            </label>
+            <label class="ubin">
+              <input type="radio" name="jenis" value="berkas" {{ 'checked' if jenis == 'berkas' }}>
+              <svg class="ikon" aria-hidden="true"><use href="#i-file-video"/></svg>
+              <strong>Rekaman</strong><small>Berkas video</small>
+            </label>
+          </fieldset>
+          <div class="field" data-jenis="webcam">
+            <label for="nilai_webcam">Nomor webcam</label>
+            <input id="nilai_webcam" name="nilai_webcam" value="0" inputmode="numeric" pattern="\d{1,2}" class="input-pendek">
+            <small>0 untuk kamera bawaan laptop, 1 untuk webcam USB kedua.</small>
+          </div>
+          <div class="field hidden" data-jenis="stream">
+            <label for="nilai_stream">Alamat stream RTSP</label>
+            <input id="nilai_stream" name="nilai_stream" placeholder="rtsp://user:sandi@192.168.1.10:554/stream1" autocomplete="off" spellcheck="false">
+            <small>Alamat ada di buku petunjuk atau aplikasi DVR kamera. Sandi tidak disimpan di riwayat.</small>
+          </div>
+          <div class="field hidden" data-jenis="berkas">
+            <label for="nilai_berkas">Berkas video</label>
+            <select id="nilai_berkas" name="nilai_berkas">
+              {% for v in video %}<option {{ 'selected' if v == pilih }}>{{ v }}</option>{% else %}<option value="">Belum ada video. Unggah dulu.</option>{% endfor %}
+            </select>
+            <div class="unggah">
+              <label class="btn btn-kecil" for="berkas-unggah"><svg class="ikon" aria-hidden="true"><use href="#i-upload"/></svg>Unggah video baru</label>
+              <input type="file" id="berkas-unggah" name="video" form="form-unggah" class="sr-only"
+                     accept=".mp4,.mpg,.mpeg,.avi,.mov,.mkv,video/*">
+              <small id="unggah-info">mp4, avi, mov, mkv, atau mpg. Maksimal 500 MB.</small>
+            </div>
+            <div class="progres hidden" id="unggah-progres" role="progressbar" aria-label="Kemajuan unggah" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+          </div>
+        </li>
+        <li>
+          <h2><span class="nomor" aria-hidden="true">2</span>Pilih mode deteksi</h2>
+          <select id="mode" name="mode" hidden>
+            <option value="otomatis" {{ '' if parkir_tersedia else 'disabled' }}>Otomatis</option>
+            <option value="umum" {{ '' if parkir_tersedia else 'selected' }}>Umum</option>
+            <option value="parkir" {{ '' if parkir_tersedia else 'disabled' }}>Parkiran motor</option>
+          </select>
+          <div class="pilihan pilihan-3" role="radiogroup" aria-label="Mode deteksi">
+            <button type="button" class="ubin" role="radio" data-mode="otomatis" aria-checked="{{ 'true' if parkir_tersedia else 'false' }}" {{ '' if parkir_tersedia else 'disabled' }}>
+              <svg class="ikon" aria-hidden="true"><use href="#i-scan-eye"/></svg>
+              <strong>Otomatis</strong><small>{{ 'Dikenali dari gambar' if parkir_tersedia else 'Perlu motor.pt' }}</small>
+            </button>
+            <button type="button" class="ubin" role="radio" data-mode="umum" aria-checked="{{ 'false' if parkir_tersedia else 'true' }}">
+              <svg class="ikon" aria-hidden="true"><use href="#i-users"/></svg>
+              <strong>Umum</strong><small>Koridor, toko, rumah</small>
+            </button>
+            <button type="button" class="ubin" role="radio" data-mode="parkir" aria-checked="false" {{ '' if parkir_tersedia else 'disabled' }}>
+              <svg class="ikon" aria-hidden="true"><use href="#i-motorbike"/></svg>
+              <strong>Parkiran</strong><small>{{ 'Orang dan motor' if parkir_tersedia else 'Perlu motor.pt' }}</small>
+            </button>
+          </div>
+          <small class="petunjuk" id="mode-info">Otomatis: dalam 10 detik pertama sistem melihat apakah ada motor terparkir, lalu memilih aturan parkiran atau umum. Pilih sendiri bila hasilnya kurang tepat. Pilihan diingat untuk setiap sumber video.</small>
+        </li>
+        <li>
+          <h2><span class="nomor" aria-hidden="true">3</span>Mulai</h2>
+          <p class="ringkas-pilihan" id="ringkas-pilihan"></p>
+          <button class="btn btn-mulai" type="submit" id="btn-mulai" {{ 'disabled' if status.berjalan }}>
+            <svg class="ikon" aria-hidden="true"><use href="#i-play"/></svg>Mulai pemantauan
+          </button>
+          <details class="lanjutan" data-jenis="berkas">
+            <summary>Pengaturan rekaman</summary>
+            <div class="field">
+              <label for="jam_rekaman">Jam awal rekaman</label>
+              <input type="time" id="jam_rekaman" name="jam_rekaman" class="input-pendek">
+              <small>Isi bila ada zona berjadwal, misalnya rekaman malam mulai 23:15. Kosong berarti jam komputer.</small>
+            </div>
+            <label class="cek"><input type="checkbox" name="analisis_penuh" value="1"> Analisis setiap frame</label>
+            <small>Biasanya video diputar sesuai waktu aslinya dan frame yang tertinggal dilewati. Centang untuk memeriksa semua frame. Tanpa GPU, video berjalan lebih lambat.</small>
+          </details>
+        </li>
+      </ol>
+    </form>
+    <form method="post" action="{{ url_for('kamera.unggah') }}" enctype="multipart/form-data" id="form-unggah"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></form>
+
+    <section class="panel sesi-panel" id="panel-sesi" aria-labelledby="judul-sesi">
+      <div class="sesi-atas">
+        <span class="label-siaran label-siaran-terang"><i aria-hidden="true"></i><span id="sesi-keadaan">Sedang memantau</span></span>
+        <h2 id="judul-sesi">Sesi <span id="st-sesi">{{ status.sesi_id or '-' }}</span></h2>
+      </div>
+      <div class="sesi-angka">
+        <div><span class="sesi-nilai" id="st-durasi">00:00:00</span><span class="sesi-label">lama sesi</span></div>
+        <div><span class="sesi-nilai" id="st-peringatan">0</span><span class="sesi-label">peringatan</span></div>
+      </div>
+      <dl class="meta">
+        <dt>Sumber</dt><dd id="st-sumber">{{ status.sumber or '-' }}</dd>
+        <dt>Mode</dt><dd id="st-mode"><span id="st-mode-teks">{{ status.mode_label }}</span><small class="mode-alasan" id="st-mode-alasan"></small></dd>
+      </dl>
+      <p id="st-galat" class="notice notice-galat {{ '' if status.galat else 'hidden' }}">{{ status.galat or '' }}</p>
+      <form method="post" action="{{ url_for('kamera.hentikan') }}" id="form-hentikan">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-hentikan" type="submit" id="btn-hentikan" {{ '' if status.berjalan else 'disabled' }}>
+          <svg class="ikon" aria-hidden="true"><use href="#i-square-stop"/></svg>Hentikan pemantauan
+        </button>
+      </form>
+      <details class="lanjutan">
+        <summary>Detail teknis</summary>
+        <dl class="meta">
+          <dt>Kecepatan</dt><dd id="st-fps">-</dd>
+          <dt>Frame dilewati</dt><dd id="st-dilewati">0</dd>
+          <dt>Perangkat</dt><dd id="st-perangkat">{{ status.perangkat }}</dd>
+          <dt>Motor terlihat</dt><dd id="st-motor">-</dd>
+        </dl>
+      </details>
+    </section>
+
+    <section class="panel" aria-labelledby="judul-orang">
+      <div class="panel-head">
+        <h2 id="judul-orang"><svg class="ikon" aria-hidden="true"><use href="#i-users"/></svg>Orang di layar</h2>
+      </div>
+      <ul class="orang-daftar" id="tbl-orang"><li class="kosong">Belum ada orang terdeteksi.</li></ul>
+    </section>
+
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='kamera.js') }}" nonce="{{ csp_nonce() }}"></script>
+<script src="{{ url_for('static', filename='zona.js') }}" nonce="{{ csp_nonce() }}"></script>
+{% endblock %}

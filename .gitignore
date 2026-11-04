@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+web/storage/snapshot/
+web/storage/video/
+web/storage/.ultralytics/
+web/storage/log/
+web/models/
+web/storage/.kunci_session
+arsip/

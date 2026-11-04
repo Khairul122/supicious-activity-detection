@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="id">
+<head>
+{% include "_kepala.html" %}
+  <title>{% block title %}{% endblock %} | Deteksi Perilaku</title>
+</head>
+<body class="tamu">
+  {% include "_ikon.html" %}
+  <main class="tamu-wadah" id="isi">
+    <section class="tamu-merek" aria-label="Tentang aplikasi">
+      <img class="tamu-logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo Deteksi Perilaku" width="132" height="132">
+      <h1>Deteksi Perilaku</h1>
+      <p>Pemantauan CCTV dengan peringatan langsung saat ada perilaku mencurigakan.</p>
+      <ul class="tamu-fitur">
+        <li><svg class="ikon" aria-hidden="true"><use href="#i-bell"/></svg>Peringatan langsung dengan foto kejadian</li>
+        <li><svg class="ikon" aria-hidden="true"><use href="#i-motorbike"/></svg>Aturan khusus parkiran motor, dipilih otomatis</li>
+        <li><svg class="ikon" aria-hidden="true"><use href="#i-shield-check"/></svg>Riwayat dengan penilaian petugas</li>
+      </ul>
+    </section>
+    <section class="tamu-form">
+      {% block form %}{% endblock %}
+    </section>
+  </main>
+  {% include "_dialog.html" %}
+  <script src="{{ url_for('static', filename='app.js') }}" nonce="{{ csp_nonce() }}"></script>
+</body>
+</html>

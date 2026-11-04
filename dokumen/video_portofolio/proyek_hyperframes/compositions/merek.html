@@ -1,0 +1,20 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+#mr-atas{position:absolute;right:70px;top:168px;font-size:30px;font-weight:800;letter-spacing:.02em}
+#mr-bawah{position:absolute;left:70px;top:1740px;display:flex;gap:14px;align-items:center}
+#mr-bawah img{width:64px;height:64px;border-radius:16px;background:#fff;padding:4px;box-shadow:0 6px 16px rgba(16,35,59,.12)}
+#mr-bawah i{display:block;font-size:20px;font-weight:600;letter-spacing:.06em;color:#5b6f86}
+#mr-bawah b{display:block;font-size:30px;font-weight:800}</style>
+  <div id="root" data-composition-id="merek" data-width="1080" data-height="1920">
+    <div id="mr-atas">KHAIRUL122</div>
+    <div id="mr-bawah"><img src="assets/img/logo_256.png" alt=""><div><i data-layout-ignore>FOLLOW GITHUB</i><b>KHAIRUL122</b></div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#mr-atas, #mr-bawah", {opacity:1}, {opacity:1, duration:.5}, 0);
+    window.__timelines["merek"] = tl;
+  </script>
+</template>

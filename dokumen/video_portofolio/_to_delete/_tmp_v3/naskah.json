@@ -1,0 +1,133 @@
+{
+ "suara": {
+  "model": "omnivoice",
+  "voice": "default",
+  "instruct": "male, middle-aged, low pitch",
+  "language": "id",
+  "speed": 1.0,
+  "seed": 2026,
+  "num_step": 32
+ },
+ "kalimat": [
+  {
+   "id": "01",
+   "kartu": "rekam",
+   "tag": "MASALAH",
+   "j1": "CCTV CUMA",
+   "j2": "MEREKAM?",
+   "teks": "CCTV biasa hanya merekam. Pencurian baru ketahuan besoknya.",
+   "sorot": "baru ketahuan",
+   "ucapan": "CCTV biasa hanya merekam. Pencurian baru ketahuan besoknya."
+  },
+  {
+   "id": "02",
+   "kartu": "logo",
+   "tag": "SOLUSI",
+   "j1": "CCTV JADI",
+   "j2": "LEBIH PINTAR",
+   "teks": "Sistem ini membuat CCTV bisa mengenali gerak-gerik mencurigakan.",
+   "sorot": "mencurigakan",
+   "ucapan": "Sistem ini membuat CCTV bisa mengenali gerak-gerik mencurigakan."
+  },
+  {
+   "id": "03",
+   "kartu": "mode",
+   "tag": "OTOMATIS",
+   "j1": "TINGGAL",
+   "j2": "NYALAKAN",
+   "teks": "Tinggal nyalakan. Sistem tahu sendiri ini koridor atau parkiran.",
+   "sorot": "tahu sendiri",
+   "ucapan": "Tinggal nyalakan. Sistem tahu sendiri, ini koridor atau parkiran."
+  },
+  {
+   "id": "04",
+   "kartu": "kenal",
+   "tag": "MENGENALI",
+   "j1": "KENALI ORANG",
+   "j2": "DAN MOTOR",
+   "teks": "Setiap orang dan motor di layar langsung dikenali.",
+   "sorot": "langsung dikenali",
+   "ucapan": "Setiap orang dan motor di layar, langsung dikenali."
+  },
+  {
+   "id": "05",
+   "kartu": "aturan",
+   "tag": "PARKIRAN",
+   "j1": "GERAK-GERIK",
+   "j2": "DIAWASI",
+   "teks": "Jongkok lama di dekat motor orang? Sistem langsung curiga.",
+   "sorot": "langsung curiga",
+   "ucapan": "Jongkok lama di dekat motor orang? Sistem langsung curiga."
+  },
+  {
+   "id": "06",
+   "kartu": "alarm",
+   "tag": "PERINGATAN",
+   "j1": "LANGSUNG",
+   "j2": "DIKABARI",
+   "teks": "Peringatan muncul saat itu juga, lengkap dengan fotonya.",
+   "sorot": "saat itu juga",
+   "ucapan": "Peringatan muncul saat itu juga, lengkap dengan fotonya."
+  },
+  {
+   "id": "07",
+   "kartu": "lewat",
+   "tag": "TIDAK ASAL",
+   "j1": "ORANG LEWAT?",
+   "j2": "TETAP AMAN",
+   "teks": "Orang yang hanya lewat tidak dianggap mencurigakan.",
+   "sorot": "hanya lewat",
+   "ucapan": "Orang yang hanya lewat, tidak dianggap mencurigakan."
+  },
+  {
+   "id": "08",
+   "kartu": "nilai",
+   "tag": "PETUGAS",
+   "j1": "TINGGAL",
+   "j2": "MENILAI",
+   "teks": "Petugas cukup menandai: benar atau alarm palsu.",
+   "sorot": "benar atau alarm palsu",
+   "ucapan": "Petugas cukup menandai, benar, atau alarm palsu."
+  },
+  {
+   "id": "09",
+   "kartu": "zona",
+   "tag": "ATUR SENDIRI",
+   "j1": "AREA DAN",
+   "j2": "JAM JAGA",
+   "teks": "Kamu bisa menandai area terlarang dan jam jaganya.",
+   "sorot": "area terlarang",
+   "ucapan": "Kamu bisa menandai area terlarang, dan jam jaganya."
+  },
+  {
+   "id": "10",
+   "kartu": "hp",
+   "tag": "DI HP",
+   "j1": "PANTAU",
+   "j2": "DARI HP",
+   "teks": "Semua bisa dipantau dari HP. Cukup masuk dengan akunmu.",
+   "sorot": "dari HP",
+   "ucapan": "Semua bisa dipantau dari HP. Cukup masuk dengan akunmu."
+  },
+  {
+   "id": "11",
+   "kartu": "aman",
+   "tag": "KEAMANAN",
+   "j1": "AKUN",
+   "j2": "TERLINDUNGI",
+   "teks": "Login terlindungi. Sistem juga lolos 29 uji serangan.",
+   "sorot": "29 uji serangan",
+   "ucapan": "Login terlindungi. Sistem juga lolos dua puluh sembilan uji serangan."
+  },
+  {
+   "id": "12",
+   "kartu": "tutup",
+   "tag": "",
+   "j1": "",
+   "j2": "",
+   "teks": "Jangan lupa follow dan simpan video ini.",
+   "sorot": "follow|simpan",
+   "ucapan": "Jangan lupa follow, dan simpan video ini."
+  }
+ ]
+}

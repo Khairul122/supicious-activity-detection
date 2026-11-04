@@ -1,0 +1,29 @@
+model,data,kelas,precision,recall,F1,mAP50,mAP50-95
+A-lama,validasi,person,0.837,0.6226,0.7141,0.7293,0.447
+A-lama,validasi,motorcycle,0.6725,0.7295,0.6998,0.7438,0.5076
+A-lama,val_oklusi,person,0.899,0.4503,0.6,0.6733,0.4003
+A-lama,val_oklusi,motorcycle,0.5971,0.9111,0.7214,0.7294,0.5584
+A-lama,val_caviar,person,0.9603,0.9343,0.9471,0.9712,0.7069
+A-lama,malam (simulasi),person,0.8271,0.4679,0.5977,0.5985,0.3384
+A-lama,malam (simulasi),motorcycle,0.5775,0.6623,0.617,0.6463,0.4252
+A-lama,cctv (simulasi),person,0.844,0.5276,0.6493,0.649,0.3793
+A-lama,cctv (simulasi),motorcycle,0.6371,0.6583,0.6475,0.6791,0.4579
+A-baru,validasi,person,0.8537,0.6866,0.761,0.7875,0.5214
+A-baru,validasi,motorcycle,0.8695,0.7108,0.7822,0.8119,0.5618
+A-baru,val_oklusi,person,0.8423,0.6566,0.738,0.7555,0.4981
+A-baru,val_oklusi,motorcycle,0.7774,0.9333,0.8483,0.9122,0.7135
+A-baru,val_caviar,person,0.9741,0.9096,0.9407,0.9632,0.7072
+A-baru,malam (simulasi),person,0.7924,0.5897,0.6762,0.6767,0.4171
+A-baru,malam (simulasi),motorcycle,0.8403,0.6676,0.744,0.7446,0.4991
+A-baru,cctv (simulasi),person,0.8194,0.6198,0.7057,0.715,0.4551
+A-baru,cctv (simulasi),motorcycle,0.8185,0.6623,0.7322,0.7587,0.5115
+B-lama,validasi,person,0.3383,0.178,0.2333,0.1447,0.0794
+B-lama,val_oklusi,person,0.2155,0.1265,0.1594,0.0632,0.028
+B-lama,val_caviar,person,0.9801,0.8858,0.9306,0.9689,0.6562
+B-lama,malam (simulasi),person,0.2964,0.1231,0.174,0.1009,0.0561
+B-lama,cctv (simulasi),person,0.3012,0.1844,0.2288,0.1468,0.0693
+B-baru,validasi,person,0.8273,0.6735,0.7425,0.7651,0.4749
+B-baru,val_oklusi,person,0.8169,0.644,0.7202,0.7425,0.468
+B-baru,val_caviar,person,0.9659,0.8812,0.9216,0.9461,0.6132
+B-baru,malam (simulasi),person,0.7484,0.5273,0.6187,0.6091,0.3454
+B-baru,cctv (simulasi),person,0.7915,0.5696,0.6625,0.6673,0.3981

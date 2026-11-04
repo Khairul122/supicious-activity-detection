@@ -1,0 +1,35 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+.tag{position:absolute;left:0;right:0;top:326px;text-align:center}
+.tag span{display:inline-block;background:#177e97;color:#fff;font-size:28px;font-weight:800;letter-spacing:.2em;padding:14px 34px 14px 40px;border-radius:999px}
+.j{position:absolute;left:40px;right:40px;text-align:center;font-size:100px;font-weight:800;line-height:1;letter-spacing:-.01em;white-space:nowrap}
+#k10-j1{top:446px} #k10-j2{top:552px} .teal{color:#1a8aa6}
+.kartu{position:absolute;left:150px;top:760px;width:780px;height:520px;border-radius:40px;background:#fff;
+  border:1px solid rgba(16,35,59,.06);box-shadow:0 30px 70px rgba(16,35,59,.10)}
+.kartu.polos{background:transparent;border:none;box-shadow:none}
+.chip{display:inline-flex;align-items:center;gap:12px;padding:12px 24px;border-radius:999px;background:#f1f6f9;border:2px solid #e2eaf0;font-size:28px;font-weight:700;white-space:nowrap}
+.hp{position:absolute;width:230px;height:498px;border-radius:30px;overflow:hidden;border:6px solid #10233b;background:#fff;box-shadow:0 24px 50px rgba(16,35,59,.18)}
+.hp img{width:100%;height:100%;display:block}</style>
+  <div id="root" data-composition-id="b10" data-width="1080" data-height="1920">
+    <div class="tag" id="k10-tag"><span>MOBILE</span></div>
+    <div class="j" id="k10-j1">WATCH FROM</div>
+    <div class="j teal" id="k10-j2">YOUR PHONE</div>
+    <div class="kartu polos" id="k10">
+      <div class="hp" id="k10-h0" style="left:20px;top:40px"><img src="assets/img/masuk.png" alt=""></div><div class="hp" id="k10-h1" style="left:275px;top:0px"><img src="assets/img/dash.png" alt=""></div><div class="hp" id="k10-h2" style="left:530px;top:40px"><img src="assets/img/riwayat_kartu.png" alt=""></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#k10-tag", {opacity:0, scale:.8}, {opacity:1, scale:1, duration:.35, ease:"back.out(2)"}, .05);
+    tl.fromTo("#k10-j1", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .12);
+    tl.fromTo("#k10-j2", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .22);
+    tl.fromTo("#k10", {opacity:0, y:50, scale:.96}, {opacity:1, y:0, scale:1, duration:.55, ease:"power3.out"}, .3);
+    tl.fromTo("#k10 .hp", {opacity:0, y:90}, {opacity:1, y:0, duration:.55, ease:"power3.out", stagger:.18}, .45);
+    tl.to("#k10-tag, #k10-j1, #k10-j2", {opacity:0, filter:"blur(10px)", duration:.3, ease:"power2.in"}, 2.746);
+    tl.to("#k10", {opacity:0, scale:.97, duration:.3, ease:"power2.in"}, 2.746);
+    window.__timelines["b10"] = tl;
+  </script>
+</template>

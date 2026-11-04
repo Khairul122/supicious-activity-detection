@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Ringkasan{% endblock %}
+{% block heading %}Ringkasan{% endblock %}
+{% block subheading %}Keadaan kamera dan peringatan yang perlu ditinjau{% endblock %}
+{% block content %}
+{% set n = data.penilaian %}
+<section class="sorotan">
+  <a class="kartu-siaran" id="dash-siaran" data-keadaan="{{ 'memantau' if data.kamera.berjalan else 'siap' }}" href="{{ url_for('kamera.index') }}">
+    <span class="label-siaran label-siaran-terang"><i aria-hidden="true"></i><span id="dash-status">{{ 'Sedang memantau' if data.kamera.berjalan else 'Kamera tidak aktif' }}</span></span>
+    <strong class="kartu-siaran-judul" id="dash-sumber">{{ data.kamera.sumber or 'Belum ada sumber video' }}</strong>
+    <span class="kartu-siaran-teks" id="dash-teks">{{ 'Buka Kamera untuk melihat tayangan dan peringatan langsung.' if data.kamera.berjalan else 'Pilih webcam, kamera CCTV, atau rekaman video untuk mulai memantau.' }}</span>
+    <span class="btn btn-terang" id="dash-aksi"><svg class="ikon" aria-hidden="true"><use href="#i-{{ 'eye' if data.kamera.berjalan else 'play' }}"/></svg>{{ 'Lihat tayangan' if data.kamera.berjalan else 'Mulai pemantauan' }}</span>
+  </a>
+  <div class="kartu-tinjau {{ 'kartu-tinjau-ada' if n.belum }}">
+    <svg class="ikon ikon-besar" aria-hidden="true"><use href="#i-{{ 'bell' if n.belum else 'check' }}"/></svg>
+    {% if n.belum %}
+    <strong class="tinjau-angka">{{ n.belum }}</strong>
+    <span class="tinjau-teks">peringatan belum dinilai. Tandai benar atau alarm palsu agar ketepatan sistem terukur.</span>
+    <a class="btn btn-utama" href="{{ url_for('riwayat.index', penilaian='belum') }}">Nilai sekarang</a>
+    {% else %}
+    <strong class="tinjau-judul">Semua peringatan sudah dinilai</strong>
+    <span class="tinjau-teks">Peringatan baru akan muncul di sini untuk ditinjau.</span>
+    {% endif %}
+  </div>
+</section>
+
+<section class="angka-baris">
+  <div class="angka-kartu">
+    <span class="angka-label">Peringatan hari ini</span>
+    <span class="angka-nilai">{{ data.hari_ini }}</span>
+    <span class="angka-catatan">sejak pukul 00.00</span>
+  </div>
+  <div class="angka-kartu">
+    <span class="angka-label">7 hari terakhir</span>
+    <span class="angka-nilai">{{ data.tujuh_hari }}</span>
+    <span class="angka-catatan">dari {{ data.total }} peringatan tercatat</span>
+  </div>
+  <div class="angka-kartu angka-kartu-lebar">
+    <span class="angka-label">Ketepatan peringatan</span>
+    <span class="angka-nilai">{{ '%.0f'|format(n.precision * 100) ~ '%' if n.precision is not none else 'Belum ada' }}</span>
+    {% set dinilai = n.benar + n.alarm_palsu %}
+    <span class="pita" role="img" aria-label="{{ n.benar }} benar, {{ n.alarm_palsu }} alarm palsu">
+      <span class="pita-benar" style="width: {{ (100 * n.benar / dinilai) if dinilai else 0 }}%"></span>
+      <span class="pita-palsu" style="width: {{ (100 * n.alarm_palsu / dinilai) if dinilai else 0 }}%"></span>
+    </span>
+    <span class="angka-catatan"><span class="titik-benar"></span>{{ n.benar }} benar <span class="titik-palsu"></span>{{ n.alarm_palsu }} alarm palsu</span>
+  </div>
+</section>
+
+<section class="grid-2">
+  <div class="panel">
+    <div class="panel-head"><h2>Peringatan per hari</h2><span class="muted">7 hari terakhir</span></div>
+    <div class="bars bars-day" role="img" aria-label="Jumlah peringatan per hari selama 7 hari terakhir">
+      {% for d in data.per_hari %}
+      <div class="bar-col {{ 'bar-hari-ini' if loop.last }}" title="{{ d.label }}: {{ d.n }} peringatan">
+        <span class="bar-val">{{ d.n }}</span>
+        <span class="bar" style="height: {{ [d.persen, 2]|max }}%"></span>
+        <span class="bar-label">{{ 'Hari ini' if loop.last else d.label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h2>Jam ramai hari ini</h2><span class="muted">pukul 00 sampai 23</span></div>
+    <div class="bars bars-hour" role="img" aria-label="Jumlah peringatan per jam hari ini">
+      {% for h in data.per_jam %}
+      <div class="bar-col" title="Pukul {{ '%02d'|format(h.jam) }}.00: {{ h.n }} peringatan">
+        <span class="bar {{ 'bar-kosong' if not h.n }}" style="height: {{ [h.persen, 2]|max }}%"></span>
+        <span class="bar-label">{{ '%02d'|format(h.jam) if h.jam % 3 == 0 else '' }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><h2>Peringatan terbaru</h2><a class="tautan" href="{{ url_for('riwayat.index') }}">Lihat semua</a></div>
+  {% if data.terbaru %}
+  <ul class="foto-baris">
+    {% for p in data.terbaru %}
+    <li>
+      <a class="foto-kartu" href="{{ url_for('riwayat.index', sesi=p.sesi_id) }}">
+        <span class="foto">
+          <img src="{{ url_for('riwayat.snapshot', name=p.snapshot) }}" alt="Snapshot peringatan ID {{ p.id_orang }}" loading="lazy">
+          {% if p.kategori %}<span class="tag tag-k-{{ p.kategori }}">{{ p.kategori|kategori }}</span>{% endif %}
+        </span>
+        <span class="foto-teks">
+          <strong>{{ p.waktu|waktu }}</strong>
+          <span>{{ p.sumber }}</span>
+          {% if p.penilaian %}<span class="tag tag-n-{{ p.penilaian }}">{{ 'Benar' if p.penilaian == 'benar' else 'Alarm palsu' }}</span>
+          {% else %}<span class="tag tag-belum">Belum dinilai</span>{% endif %}
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="kosong-besar">
+    <svg class="ikon ikon-besar" aria-hidden="true"><use href="#i-bell"/></svg>
+    <strong>Belum ada peringatan</strong>
+    <span>Peringatan muncul di sini setelah kamera memantau dan menemukan perilaku mencurigakan.</span>
+    <a class="btn btn-utama" href="{{ url_for('kamera.index') }}">Buka Kamera</a>
+  </div>
+  {% endif %}
+</section>
+
+<section class="grid-2 grid-lebar-kiri">
+  <div class="panel">
+    <div class="panel-head"><h2>Sesi terbaru</h2><span class="muted">{{ data.jumlah_sesi }} sesi tercatat</span></div>
+    {% if data.sesi_terbaru %}
+    <ul class="list sesi-daftar">
+      {% for s in data.sesi_terbaru %}
+      <li>
+        <a href="{{ url_for('riwayat.index', sesi=s.id) }}">
+          <span class="sesi-nama"><strong>Sesi {{ s.id }}</strong><span>{{ s.sumber }}</span></span>
+          <span class="sesi-info"><span class="muted">{{ s.mulai|waktu }}</span>
+            <span class="tag {{ 'tag-ada' if s.jumlah_peringatan else '' }}">{{ s.jumlah_peringatan }} peringatan</span>
+            <span class="tag tag-{{ s.status }}">{{ s.status }}</span></span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}<p class="kosong">Belum ada sesi.</p>{% endif %}
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h2>Info sistem</h2></div>
+    <dl class="meta">
+      <dt>Model umum</dt><dd>{{ data.sistem.model }}</dd>
+      <dt>Model parkiran</dt><dd>{{ data.sistem.model_parkir }}</dd>
+      <dt>Pelacak</dt><dd>{{ data.sistem.tracker }}</dd>
+      <dt>Confidence</dt><dd>{{ data.sistem.confidence }}</dd>
+      <dt>Ukuran inferensi</dt><dd>{{ data.sistem.image_size }} px</dd>
+      <dt>Basis data</dt><dd>{{ data.sistem.database }}</dd>
+    </dl>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script nonce="{{ csp_nonce() }}">
+  // perbarui kartu kamera tanpa memuat ulang halaman
+  document.addEventListener("status-kamera", function (e) {
+    var s = e.detail, k = window.keadaanKamera(s), kartu = document.getElementById("dash-siaran");
+    kartu.dataset.keadaan = k;
+    document.getElementById("dash-status").textContent =
+      k === "memantau" ? "Sedang memantau" : k === "menyiapkan" ? "Menyiapkan kamera" : "Kamera tidak aktif";
+    document.getElementById("dash-sumber").textContent = s.berjalan ? (s.sumber || "") : "Belum ada sumber video";
+    document.getElementById("dash-teks").textContent = s.berjalan
+      ? s.peringatan_sesi + " peringatan di sesi ini. Buka Kamera untuk melihat tayangan."
+      : "Pilih webcam, kamera CCTV, atau rekaman video untuk mulai memantau.";
+    var aksi = document.getElementById("dash-aksi");
+    aksi.lastChild.textContent = s.berjalan ? "Lihat tayangan" : "Mulai pemantauan";
+    aksi.querySelector("use").setAttribute("href", s.berjalan ? "#i-eye" : "#i-play");
+  });
+</script>
+{% endblock %}

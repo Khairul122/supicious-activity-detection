@@ -1,0 +1,19 @@
+{
+  "suara": {"model": "omnivoice", "voice": "default", "instruct": "male, middle-aged, low pitch, american accent", "language": "en", "speed": 1.0, "seed": 2026, "num_step": 32},
+  "ikon_tutup": "message-circle",
+  "kalimat": [
+    {"id": "01", "kartu": "rekam", "tag": "THE PROBLEM", "j1": "CCTV ONLY",    "j2": "RECORDS?",    "teks": "Regular CCTV only records. You find out about a theft the next day.", "sorot": "the next day", "ucapan": "Regular CCTV only records. You find out about a theft the next day."},
+    {"id": "02", "kartu": "logo",  "tag": "THE FIX",     "j1": "SMARTER",      "j2": "CCTV",        "teks": "This system teaches your CCTV to spot suspicious behavior.", "sorot": "suspicious behavior", "ucapan": "This system teaches your CCTV to spot suspicious behavior."},
+    {"id": "03", "kartu": "mode",  "tag": "AUTOMATIC",   "j1": "JUST",         "j2": "TURN IT ON",  "teks": "Just turn it on. It knows if it's a hallway or a parking lot.", "sorot": "knows", "ucapan": "Just turn it on. It knows if it's a hallway, or a parking lot."},
+    {"id": "04", "kartu": "kenal", "tag": "DETECTION",   "j1": "SEES PEOPLE",  "j2": "AND BIKES",   "teks": "Every person and motorbike on screen is recognized instantly.", "sorot": "recognized instantly", "ucapan": "Every person and motorbike on screen, is recognized instantly."},
+    {"id": "05", "kartu": "aturan","tag": "PARKING",     "j1": "EVERY MOVE",   "j2": "WATCHED",     "teks": "Crouching too long by someone's bike? The system gets suspicious.", "sorot": "gets suspicious", "ucapan": "Crouching too long by someone's bike? The system gets suspicious."},
+    {"id": "06", "kartu": "alarm", "tag": "ALERTS",      "j1": "INSTANT",      "j2": "ALERTS",      "teks": "Alerts appear right away, with a photo attached.", "sorot": "right away", "ucapan": "Alerts appear right away, with a photo attached."},
+    {"id": "07", "kartu": "lewat", "tag": "SMART",       "j1": "JUST PASSING?","j2": "NO ALARM",    "teks": "People who are just walking by are not flagged.", "sorot": "walking by", "ucapan": "People who are just walking by, are not flagged."},
+    {"id": "08", "kartu": "nilai", "tag": "REVIEW",      "j1": "ONE TAP",      "j2": "REVIEW",      "teks": "Staff mark each alert: real or false alarm.", "sorot": "real or false alarm", "ucapan": "Staff mark each alert, real, or false alarm."},
+    {"id": "09", "kartu": "zona",  "tag": "YOUR RULES",  "j1": "ZONES AND",    "j2": "HOURS",       "teks": "Mark restricted areas and the hours they are guarded.", "sorot": "restricted areas", "ucapan": "Mark restricted areas, and the hours they are guarded."},
+    {"id": "10", "kartu": "hp",    "tag": "MOBILE",      "j1": "WATCH FROM",   "j2": "YOUR PHONE",  "teks": "Monitor everything from your phone. Just log in.", "sorot": "your phone", "ucapan": "Monitor everything from your phone. Just log in."},
+    {"id": "11", "kartu": "aman",  "tag": "SECURITY",    "j1": "SECURE",       "j2": "BY DESIGN",   "teks": "Secure login. It passed all 29 attack tests.", "sorot": "29 attack tests", "ucapan": "Secure login. It passed all twenty nine attack tests."},
+    {"id": "12", "kartu": "jual",  "tag": "AVAILABLE",   "j1": "GET IT",       "j2": "OR CUSTOM",   "teks": "This system is ready to buy. I can also build one for your needs.", "sorot": "ready to buy", "ucapan": "This system is ready to buy. I can also build one for your needs."},
+    {"id": "13", "kartu": "tutup", "tag": "",            "j1": "",             "j2": "",            "teks": "Need a system like this? Let's talk.", "sorot": "system|talk", "ucapan": "Need a system like this? Let's talk."}
+  ]
+}

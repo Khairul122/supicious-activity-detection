@@ -1,0 +1,15 @@
+{# Dialog pemberitahuan: semua pesan berhasil, gagal, dan konfirmasi tampil di sini. #}
+<dialog class="dialog" id="dialog" aria-labelledby="dialog-judul" aria-describedby="dialog-pesan">
+  <div class="dialog-isi">
+    <span class="dialog-ikon" aria-hidden="true"><svg class="ikon"><use id="dialog-ikon" href="#i-info"/></svg></span>
+    <h2 id="dialog-judul"></h2>
+    <p id="dialog-pesan"></p>
+    <div class="dialog-aksi">
+      <button class="btn btn-teks" type="button" id="dialog-batal">Batal</button>
+      <button class="btn btn-utama" type="button" id="dialog-ok">Oke</button>
+    </div>
+  </div>
+</dialog>
+{% with pesan = get_flashed_messages(with_categories=true) %}
+<script type="application/json" id="pesan-server" nonce="{{ csp_nonce() }}">{{ pesan|tojson }}</script>
+{% endwith %}

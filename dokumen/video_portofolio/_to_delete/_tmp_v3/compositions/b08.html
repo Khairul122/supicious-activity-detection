@@ -1,0 +1,47 @@
+<template>
+  <style>@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url("assets/fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:500;src:url("assets/fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:600;src:url("assets/fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:700;src:url("assets/fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}@font-face{font-family:"Plus Jakarta Sans";font-weight:800;src:url("assets/fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+#root{position:absolute;inset:0;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:#10233b}
+.ik{flex:none;display:block}
+
+.tag{position:absolute;left:0;right:0;top:326px;text-align:center}
+.tag span{display:inline-block;background:#177e97;color:#fff;font-size:28px;font-weight:800;letter-spacing:.2em;padding:14px 34px 14px 40px;border-radius:999px}
+.j{position:absolute;left:40px;right:40px;text-align:center;font-size:100px;font-weight:800;line-height:1;letter-spacing:-.01em;white-space:nowrap}
+#k08-j1{top:446px} #k08-j2{top:552px} .teal{color:#1a8aa6}
+.kartu{position:absolute;left:150px;top:760px;width:780px;height:520px;border-radius:40px;background:#fff;
+  border:1px solid rgba(16,35,59,.06);box-shadow:0 30px 70px rgba(16,35,59,.10)}
+.kartu.polos{background:transparent;border:none;box-shadow:none}
+.chip{display:inline-flex;align-items:center;gap:12px;padding:12px 24px;border-radius:999px;background:#f1f6f9;border:2px solid #e2eaf0;font-size:28px;font-weight:700;white-space:nowrap}
+.vd{position:absolute;left:14px;top:14px;width:752px;overflow:hidden;border-radius:28px;background:#000}
+.bawah{position:absolute;left:0;right:0;top:450px;display:flex;justify-content:center;gap:16px}.nl-label{position:absolute;left:44px;top:336px;display:flex;gap:12px;align-items:center;font-size:32px;font-weight:800}
+.nl-btn{position:absolute;top:404px;width:332px;height:86px;border-radius:20px;border:3px solid #d5dee8;font-size:32px;font-weight:700;overflow:hidden}
+.nl-btn span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px}
+.nl-cek{background:#ef4a4a;color:#fff}
+.nl-tap{position:absolute;left:165px;top:402px;width:90px;height:90px;border-radius:50%;background:rgba(26,138,166,.35);border:4px solid #1a8aa6}</style>
+  <div id="root" data-composition-id="b08" data-width="1080" data-height="1920">
+    <div class="tag" id="k08-tag"><span>REVIEW</span></div>
+    <div class="j" id="k08-j1">ONE TAP</div>
+    <div class="j teal" id="k08-j2">REVIEW</div>
+    <div class="kartu" id="k08">
+      <div class="vd" style="height:300px"><img src="assets/img/snap_curi.jpg" alt="" style="position:absolute;left:0;top:-62px;width:752px;height:423px"></div>
+      <div class="nl-label"><svg class="ik" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c23b3b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg>Vanished near a motorbike</div>
+      <div class="nl-btn" id="k08-benar" style="left:44px" data-layout-allow-overlap><span id="k08-bt">Real</span><span class="nl-cek" id="k08-bc"><svg class="ik" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>Real</span></div>
+      <div class="nl-btn" style="left:404px"><span>False alarm</span></div>
+      <div class="nl-tap" id="k08-tap"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#k08-tag", {opacity:0, scale:.8}, {opacity:1, scale:1, duration:.35, ease:"back.out(2)"}, .05);
+    tl.fromTo("#k08-j1", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .12);
+    tl.fromTo("#k08-j2", {opacity:0, y:40, filter:"blur(10px)"}, {opacity:1, y:0, filter:"blur(0px)", duration:.5, ease:"power3.out"}, .22);
+    tl.fromTo("#k08", {opacity:0, y:50, scale:.96}, {opacity:1, y:0, scale:1, duration:.55, ease:"power3.out"}, .3);
+    tl.fromTo("#k08-bc", {opacity:0}, {opacity:0}, 0);
+    tl.fromTo("#k08-tap", {opacity:0, scale:1.6}, {opacity:1, scale:1, duration:.3, ease:"power2.out"}, 1.58);
+    tl.to("#k08-tap", {opacity:0, scale:.6, duration:.25, ease:"power2.in"}, 1.93);
+    tl.to("#k08-bc", {opacity:1, duration:.15}, 1.90);
+    tl.to("#k08-benar", {borderColor:"#ef4a4a", duration:.15}, 1.90);
+    tl.to("#k08-tag, #k08-j1, #k08-j2", {opacity:0, filter:"blur(10px)", duration:.3, ease:"power2.in"}, 2.828);
+    tl.to("#k08", {opacity:0, scale:.97, duration:.3, ease:"power2.in"}, 2.828);
+    window.__timelines["b08"] = tl;
+  </script>
+</template>

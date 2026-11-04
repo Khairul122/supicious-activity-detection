@@ -1,0 +1,33 @@
+{% extends "_halaman_tamu.html" %}
+{% block title %}Pengaturan awal{% endblock %}
+{% block form %}
+<form method="post" action="{{ url_for('auth.pengaturan_awal') }}" class="kartu-form" autocomplete="off">
+  <h2>Buat akun admin</h2>
+  <p class="muted">Web ini belum punya akun. Buat akun admin pertama untuk mengamankan pemantauan.</p>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="jebakan" aria-hidden="true"><label for="situs_web">Situs web</label><input id="situs_web" name="situs_web" tabindex="-1" autocomplete="off"></div>
+  <div class="field">
+    <label for="nama">Nama lengkap</label>
+    <input id="nama" name="nama" value="{{ isian.nama }}" required maxlength="80" autocomplete="name" autofocus>
+  </div>
+  <div class="field">
+    <label for="nama_pengguna">Nama pengguna</label>
+    <input id="nama_pengguna" name="nama_pengguna" value="{{ isian.nama_pengguna }}" required maxlength="40" pattern="[a-z0-9._\-]{3,40}"
+           autocomplete="username" autocapitalize="none" spellcheck="false">
+    <small>3 sampai 40 karakter: huruf kecil, angka, titik, garis bawah, atau strip.</small>
+  </div>
+  <div class="field">
+    <label for="sandi">Sandi</label>
+    <div class="sandi-wadah">
+      <input id="sandi" name="sandi" type="password" required minlength="8" maxlength="128" autocomplete="new-password">
+      <button class="btn-lihat" type="button" data-lihat="sandi" aria-label="Tampilkan sandi" aria-pressed="false"><svg class="ikon" aria-hidden="true"><use href="#i-eye"/></svg></button>
+    </div>
+    <small>Minimal 8 karakter, berisi huruf dan angka.</small>
+  </div>
+  <div class="field">
+    <label for="ulang_sandi">Ulangi sandi</label>
+    <input id="ulang_sandi" name="ulang_sandi" type="password" required minlength="8" maxlength="128" autocomplete="new-password">
+  </div>
+  <button class="btn btn-utama btn-penuh" type="submit"><svg class="ikon" aria-hidden="true"><use href="#i-shield-check"/></svg>Buat akun dan masuk</button>
+</form>
+{% endblock %}
